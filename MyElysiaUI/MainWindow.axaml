@@ -1,0 +1,98 @@
+<suki:SukiWindow x:Class="MyElysiaUI.MainWindow"
+                 xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+                 xmlns:myElysiaUi="clr-namespace:MyElysiaUI"
+                 xmlns:models="clr-namespace:SukiUI.Models;assembly=SukiUI"
+                 xmlns:converters1="clr-namespace:MyElysiaUI.Converters"
+
+                 Title="满穗AI助手"
+                 d:DesignHeight="450"
+                 d:DesignWidth="800"
+                 x:DataType="myElysiaUi:MainWindowViewModel"
+                 Icon="Assets/AppImage.png"
+                 IsMenuVisible="True"
+                 IsTitleBarVisible="True"
+                 mc:Ignorable="d">
+
+    <suki:SukiWindow.MenuItems>
+        <MenuItem Header="亮暗与背景动画">
+            <MenuItem Command="{Binding ToggleBaseThemeCommand}" Header="{Binding BaseTheme}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Lightbulb" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="-" />
+            <MenuItem Command="{Binding ToggleAnimationsCommand}" Header="Animations">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon
+                        Kind="{Binding AnimationsEnabled, Converter={x:Static converters1:BoolToIconConverters.Animation}}" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </MenuItem>
+        <MenuItem Header="主题颜色">
+            <MenuItem Click="MenuItem_OnClick"
+                      Header="切换到..."
+                      ItemsSource="{Binding Themes}">
+                <MenuItem.DataTemplates>
+                    <DataTemplate DataType="{x:Type models:SukiColorTheme}">
+                        <TextBlock Foreground="{Binding PrimaryBrush}" Text="{Binding DisplayName}" />
+                    </DataTemplate>
+                </MenuItem.DataTemplates>
+            </MenuItem>
+            <MenuItem Header="-" />
+            <MenuItem Command="{Binding CreateCustomThemeCommand}" Header="创建自定义主题颜色" />
+        </MenuItem>
+    </suki:SukiWindow.MenuItems>
+
+    <suki:SukiSideMenu ItemsSource="{Binding Pages}" SelectedItem="{Binding ActivePage}">
+        <suki:SukiSideMenu.ItemTemplate>
+            <DataTemplate>
+                <suki:SukiSideMenuItem Header="{Binding DisplayName}">
+                    <suki:SukiSideMenuItem.Icon>
+                        <avalonia:MaterialIcon Kind="{Binding Icon}" />
+                    </suki:SukiSideMenuItem.Icon>
+                </suki:SukiSideMenuItem>
+            </DataTemplate>
+        </suki:SukiSideMenu.ItemTemplate>
+        <suki:SukiSideMenu.HeaderContent>
+            <Image Width="80"
+                   Height="80"
+                   Margin="30,10,30,30"
+                   IsVisible="True"
+                   Source="Assets/AppImage.png" />
+        </suki:SukiSideMenu.HeaderContent>
+        <suki:SukiSideMenu.FooterContent>
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <StackPanel.Styles>
+                    <Style Selector="Button">
+                        <Setter Property="Command" Value="{Binding OpenUrlCommand}" />
+                    </Style>
+                    <Style Selector="avalonia|MaterialIcon">
+                        <Setter Property="Width" Value="25" />
+                        <Setter Property="Height" Value="25" />
+                    </Style>
+                </StackPanel.Styles>
+                <Button
+                    CommandParameter="https://space.bilibili.com/25594943/"
+                    ToolTip.Tip="打开 kiraYuukiAsuna B站主页">
+                    <avalonia:MaterialIcon Kind="LinkCircle" />
+                </Button>
+                <Button
+                    CommandParameter="https://space.bilibili.com/440540010"
+                    ToolTip.Tip="打开 乐观者之说 B站主页">
+                    <avalonia:MaterialIcon Kind="LinkCircle" />
+                </Button>
+                <Button
+                    CommandParameter="https://github.com/kiraYuukiAsuna"
+                    ToolTip.Tip="打开 kiraYuukiAsuna GitHub主页">
+                    <avalonia:MaterialIcon Kind="Github" />
+                </Button>
+            </StackPanel>
+        </suki:SukiSideMenu.FooterContent>
+    </suki:SukiSideMenu>
+
+</suki:SukiWindow>

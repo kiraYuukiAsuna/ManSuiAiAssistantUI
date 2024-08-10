@@ -1,0 +1,191 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
+             xmlns:namespace="clr-namespace:MyElysiaUI.Pages.CharacterPresetPage"
+             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             x:DataType="namespace:CharacterPresetConfigPageViewModel"
+             x:Class="MyElysiaUI.Pages.CharacterPresetPage.CharacterPresetConfigPage">
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <WrapPanel Margin="15"
+                   theme:WrapPanelExtensions.AnimatedScroll="True"
+                   Orientation="Horizontal">
+            <controls:GlassCard Width="800" Margin="15">
+                <controls:GroupBox Header="加载人物设定配置文件">
+                    <controls:BusyArea Name="BusySignIn"
+                                       BusyText="Signing In..."
+                                       IsBusy="False">
+                        <StackPanel Margin="25,0" Spacing="10">
+                            <ToolTip>配置你的人物设定</ToolTip>
+                            <Panel>
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="创建新配置文件：" />
+                                <TextBox VerticalAlignment="Top" HorizontalAlignment="Center"
+                                         Width="200"
+                                         Text="{Binding NewConfigFileName}" />
+
+                                <Button Margin="15,0,0,0"
+                                        VerticalAlignment="Top" HorizontalAlignment="Right"
+                                        Command="{Binding CreateNewConfigCommand}"
+                                        Content="创建新配置文件" />
+                            </Panel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Margin="15,0,0,0"
+                                        VerticalAlignment="Top" HorizontalAlignment="Left"
+                                        Command="{Binding RescanConfigCommand}"
+                                        Content="刷新配置文件列表" />
+                                <Button Margin="15,0,0,0"
+                                        VerticalAlignment="Top" HorizontalAlignment="Center"
+                                        Command="{Binding ImportConfigCommand}"
+                                        Content="导入配置文件" />
+                                <Button Margin="15,0,0,0"
+                                        VerticalAlignment="Top" HorizontalAlignment="Right"
+                                        Command="{Binding ExportConfigCommand}"
+                                        Content="导出选中的配置文件" />
+                                <Button Margin="15,0,0,0"
+                                        VerticalAlignment="Top" HorizontalAlignment="Right"
+                                        Command="{Binding DeleteConfigCommand}"
+                                        Content="删除选中的配置文件" />
+                            </StackPanel>
+                            <Panel>
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="选择人物设定配置文件:" />
+                                <ComboBox VerticalAlignment="Top" HorizontalAlignment="Center"
+                                          Width="200"
+                                          ItemsSource="{Binding ConfigFileNameList}"
+                                          SelectedItem="{Binding SelectedConfigFileName}" />
+                                <Button Margin="15,0,0,0"
+                                        VerticalAlignment="Top" HorizontalAlignment="Right"
+                                        Command="{Binding SaveConfigCommand}"
+                                        Content="保存选中的配置文件" />
+                            </Panel>
+                            <Panel>
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="人物姓名:" />
+                                <TextBox Width="100" VerticalAlignment="Top" HorizontalAlignment="Right"
+                                         TextWrapping="Wrap"
+                                         Text="{Binding ConfigName}" />
+                            </Panel>
+                            <Panel>
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="人物对你的称呼:" />
+                                <TextBox Width="100" VerticalAlignment="Top" HorizontalAlignment="Right"
+                                         TextWrapping="Wrap"
+                                         Text="{Binding YourName}" />
+                            </Panel>
+                            <StackPanel Orientation="Vertical" Spacing="10">
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="模型输出转语音前需要删除的规律文本（正则表达式形式，双击有文字的区域选中进入编辑状态）:" />
+                                <Panel>
+                                    <Button Margin="15,0,0,0"
+                                            VerticalAlignment="Top" HorizontalAlignment="Left"
+                                            Command="{Binding AddNewRegexExpressionCommand}"
+                                            Content="添加新正则表达式" />
+                                    <Button Margin="15,0,0,0"
+                                            VerticalAlignment="Top" HorizontalAlignment="Right"
+                                            Command="{Binding DeleteSelectedRegexExpressionCommand}"
+                                            Content="删除双击选中的正则表达式" />
+                                </Panel>
+                                <DataGrid MinWidth="400" MinHeight="100" CanUserResizeColumns="False"
+                                          SelectedItem="{Binding SelectedExceptTextRegexExpressionDataGridContent}"
+                                          ItemsSource="{Binding ExceptTextRegexExpressionsDataGridContent}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding RegexExpression}" Header="正则表达式"
+                                                            Width="600" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="人物设定文本（使用 Sytem Prompt）:" />
+                                <TextBox Width="600" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         Text="{Binding CharacterPresetTextAkaSystemPrompt}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Spacing="10">
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="启用的插件名称（双击有文字的区域选中进入编辑状态）:" />
+                                <Panel>
+                                    <Button Margin="15,0,0,0"
+                                            VerticalAlignment="Top" HorizontalAlignment="Left"
+                                            Command="{Binding AddNewPluginCommand}"
+                                            Content="添加新插件" />
+                                    <Button Margin="15,0,0,0"
+                                            VerticalAlignment="Top" HorizontalAlignment="Right"
+                                            Command="{Binding DeleteSelectedPluginCommand}"
+                                            Content="删除双击选中的插件" />
+                                </Panel>
+                                <DataGrid MinWidth="400" MinHeight="100" CanUserResizeColumns="False"
+                                          SelectedItem="{Binding SelectedPluginDataGridContent}"
+                                          ItemsSource="{Binding EnabledPluginDataGridContent}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Binding="{Binding PlugininName}" Header="插件名称"
+                                                            Width="600" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Spacing="10">
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="HotRules:" />
+                                <TextBox Width="600" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         Text="{Binding HotRulesContentViewModel}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Spacing="10">
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="HotWords:" />
+                                <TextBox Width="600" VerticalAlignment="Top" HorizontalAlignment="Left"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"
+                                         Text="{Binding HotZhWordsDataGridContent}" />
+                            </StackPanel>
+                            <Panel>
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="空闲超时时间（最短10秒钟，小于10秒相当于关闭此功能）:" />
+                                <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                               Width="100"
+                                               Value="{Binding IdleAskTime}" Increment="1"
+                                               Minimum="-1" />
+                            </Panel>
+                            <Panel>
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="空闲超时时，发出消息的内容:" />
+                                <TextBox Width="300" VerticalAlignment="Top" HorizontalAlignment="Right"
+                                         TextWrapping="Wrap"
+                                         Text="{Binding IdleAskMessage}" />
+                            </Panel>
+                        </StackPanel>
+                    </controls:BusyArea>
+                </controls:GroupBox>
+            </controls:GlassCard>
+
+        </WrapPanel>
+
+    </ScrollViewer>
+</UserControl>

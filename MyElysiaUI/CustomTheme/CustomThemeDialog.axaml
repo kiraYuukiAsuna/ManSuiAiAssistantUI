@@ -1,0 +1,38 @@
+<UserControl x:Class="MyElysiaUI.CustomTheme.CustomThemeDialog"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:customTheme="clr-namespace:MyElysiaUI.CustomTheme"
+             Height="300"
+             Width="600"
+             x:DataType="customTheme:CustomThemeDialogViewModel"
+             mc:Ignorable="d">
+    <controls:GroupBox Header="Create Custom Theme">
+        <StackPanel Spacing="20">
+            <Panel>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Text="DisplayName" />
+                <TextBox VerticalAlignment="Top" HorizontalAlignment="Right"
+                         Text="{Binding DisplayName}" />
+
+            </Panel>
+            <Panel>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Text="PrimaryColor" />
+                <ColorPicker VerticalAlignment="Top" HorizontalAlignment="Right"
+
+                             Color="{Binding PrimaryColor}" />
+            </Panel>
+            <Panel>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                           Text="AccentColor" />
+                <ColorPicker VerticalAlignment="Top" HorizontalAlignment="Right"
+
+                             Color="{Binding AccentColor}" />
+            </Panel>
+            <Button Command="{Binding TryCreateThemeCommand}" Content="Create" />
+        </StackPanel>
+    </controls:GroupBox>
+</UserControl>

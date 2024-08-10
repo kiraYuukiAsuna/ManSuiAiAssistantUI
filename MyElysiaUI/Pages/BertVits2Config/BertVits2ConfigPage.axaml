@@ -1,0 +1,106 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:bertVits2Config="clr-namespace:MyElysiaUI.Pages.BertVits2Config"
+             x:DataType="bertVits2Config:BertVits2ConfigPageViewModel"
+             x:Class="MyElysiaUI.Pages.BertVits2Config.BertVits2ConfigPage">
+    <ScrollViewer>
+        <controls:GlassCard>
+            <StackPanel>
+                <Panel>
+                    <Button Margin="15,0,0,0"
+                            VerticalAlignment="Top" HorizontalAlignment="Left"
+                            Command="{Binding ReloadConfigCommand}"
+                            Content="刷新配置文件列表" />
+                </Panel>
+                <Panel>
+                    <TextBlock Margin="0,0,0,0"
+                               VerticalAlignment="Center" HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Text="说话人ID:" />
+                    <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                   Width="100"
+                                   Value="{Binding Id}" Increment="1"
+                                   Minimum="0" />
+                </Panel>
+                <Panel>
+                    <TextBlock Margin="0,0,0,0"
+                               VerticalAlignment="Center" HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Text="Format:" />
+                    <TextBox VerticalAlignment="Top" HorizontalAlignment="Right"
+                             Width="200"
+                             Text="{Binding Format}" />
+                </Panel>
+                <Panel>
+                    <TextBlock Margin="0,0,0,0"
+                               VerticalAlignment="Center" HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Text="Language:" />
+                    <TextBox VerticalAlignment="Top" HorizontalAlignment="Right"
+                             Width="200"
+                             Text="{Binding Lang}" />
+                </Panel>
+                <Panel>
+                    <TextBlock Margin="0,0,0,0"
+                               VerticalAlignment="Center" HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Text="Length（倍速）:" />
+                    <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                   Width="100"
+                                   Value="{Binding Length}" Increment="0.1"
+                                   Minimum="0.1" Maximum="5" />
+                </Panel>
+                <Panel>
+                    <TextBlock Margin="0,0,0,0"
+                               VerticalAlignment="Center" HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Text="Noise:" />
+                    <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                   Width="100"
+                                   Value="{Binding Noise}" Increment="0.01"
+                                   Minimum="0.1" />
+                </Panel>
+                <Panel>
+                    <TextBlock Margin="0,0,0,0"
+                               VerticalAlignment="Center" HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Text="Noisew:" />
+                    <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                   Width="100"
+                                   Value="{Binding Noisew}" Increment="0.01"
+                                   Minimum="0.1" />
+                </Panel>
+                <Panel>
+                    <TextBlock Margin="0,0,0,0"
+                               VerticalAlignment="Center" HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Text="SdpRatio:" />
+                    <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                   Width="100"
+                                   Value="{Binding SdpRatio}" Increment="0.01"
+                                   Minimum="0.1" />
+                </Panel>
+                <Panel>
+                    <TextBlock Margin="0,0,0,0"
+                               VerticalAlignment="Center" HorizontalAlignment="Left"
+                               FontWeight="Bold"
+                               Text="SegmentSize:" />
+                    <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                   Width="100"
+                                   Value="{Binding SegmentSize}" Increment="1"
+                                   Minimum="1" />
+                </Panel>
+                <Panel>
+                    <Button Margin="15,0,0,0"
+                            VerticalAlignment="Top" HorizontalAlignment="Right"
+                            Command="{Binding SaveConfigCommand}"
+                            Content="保存配置" />
+                </Panel>
+            </StackPanel>
+        </controls:GlassCard>
+    </ScrollViewer>
+</UserControl>

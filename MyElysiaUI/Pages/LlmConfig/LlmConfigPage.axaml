@@ -1,0 +1,249 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:llmConfig="clr-namespace:MyElysiaUI.Pages.LlmConfig"
+             x:DataType="llmConfig:LlmConfigPageViewModel"
+
+             x:Class="MyElysiaUI.Pages.LlmConfig.LlmConfigPage">
+    <Grid RowDefinitions="*, Auto" Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="0" Grid.Column="0">
+            <controls:GlassCard>
+                <controls:GroupBox Header="本地大语言模型配置信息">
+                    <StackPanel Margin="25,0" Spacing="10">
+                        <ToolTip>在这个页面你可以配置有关本地大语言模型的具体的配置信息</ToolTip>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="配置文件名称" />
+
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Center"
+                                     Width="200"
+                                     Text="{Binding NewConfigFileName}" />
+
+                            <Button Margin="15,0,0,0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right"
+                                    Command="{Binding CreateNewConfigCommand}"
+                                    Content="创建新配置文件" />
+                        </Panel>
+                        <Panel>
+                            <Button Margin="15,0,0,0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Left"
+                                    Command="{Binding RescanConfigCommand}"
+                                    Content="刷新配置文件列表" />
+                            <Button Margin="15,0,0,0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right"
+                                    Command="{Binding ImportConfigCommand}"
+                                    Content="导入配置文件" />
+                            <Button Margin="15,0,0,0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Center"
+                                    Command="{Binding ExportConfigCommand}"
+                                    Content="导出配置文件" />
+                        </Panel>
+
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="选择模型运行配置文件:" />
+                            <ComboBox VerticalAlignment="Top" HorizontalAlignment="Center"
+                                      Width="200"
+                                      ItemsSource="{Binding ModelParameterConfigList}"
+                                      SelectedItem="{Binding SelectedModelParameterConfig}" />
+                            <Button Margin="15,0,0,0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right"
+                                    Command="{Binding DeleteConfigCommand}"
+                                    Content="删除选中的配置文件" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="此配置文件描述信息:" />
+
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Right"
+                                     Width="200"
+                                     Text="{Binding ConfigName}" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="ContextSize（上下文大小）:" />
+
+                            <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                           Width="100"
+                                           Value="{Binding LocalContextSize}" Increment="1"
+                                           Minimum="1" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="Temperature:" />
+                            <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                           Width="100"
+                                           Value="{Binding Temperature}" Increment="0.1"
+                                           Minimum="0" Maximum="1" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="NGpuLayers（越大占用显存越高但推理更快）:" />
+                            <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                           Width="100"
+                                           Value="{Binding NGpuLayers}" Increment="1"
+                                           Minimum="0" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="Seed（随机数种子）:" />
+                            <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                           Width="100"
+                                           Value="{Binding Seed}" Increment="1"
+                                           Minimum="0" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="UseMemoryLock（锁定本地模型到内存）:" />
+                            <ToggleSwitch VerticalAlignment="Top" HorizontalAlignment="Right"
+                                          Width="100"
+                                          IsChecked="{Binding UseMemoryLock}">
+                            </ToggleSwitch>
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="BatchThreads（批处理线程数）:" />
+                            <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                           Width="100"
+                                           Value="{Binding BatchThreads}" Increment="1"
+                                           Minimum="1" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="Threads（线程数）:" />
+                            <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                           Width="100"
+                                           Value="{Binding Threads}" Increment="1"
+                                           Minimum="1" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="BatchSize（批处理大小）:" />
+                            <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                           Width="100"
+                                           Value="{Binding BatchSize}" Increment="1"
+                                           Minimum="1" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="启用 FlashAttention:" />
+                            <ToggleSwitch VerticalAlignment="Top" HorizontalAlignment="Right"
+                                          Width="100"
+                                          IsChecked="{Binding FlashAttention}">
+                            </ToggleSwitch>
+
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="保存配置" />
+                            <Button Margin="15,0,0,0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right"
+                                    Command="{Binding SaveConfigCommand}"
+                                    Content="保存配置" />
+                        </Panel>
+                    </StackPanel>
+                </controls:GroupBox>
+            </controls:GlassCard>
+        </ScrollViewer>
+        <ScrollViewer Grid.Row="0" Grid.Column="1">
+            <controls:GlassCard>
+                <controls:GroupBox Header="在线大语言模型配置信息">
+                    <StackPanel Spacing="15">
+                        <ToolTip>在这个页面你可以配置有关在线大语言模型的具体的配置信息</ToolTip>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="在线模型名称:" />
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Right"
+                                     Width="200"
+                                     Text="{Binding OnlineModelName}" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="在线模型请求地址:" />
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Right"
+                                     Width="200"
+                                     Text="{Binding OnlineModelUrl}" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="ApiKey密钥:" />
+                            <TextBox VerticalAlignment="Top" HorizontalAlignment="Right"
+                                     Width="200"
+                                     PasswordChar="*"
+                                     Text="{Binding OnlineModelApiKey}" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="ContextSize（上下文大小）:" />
+                            <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                           Width="100"
+                                           Value="{Binding OnlineContextSize}" Increment="1"
+                                           Minimum="1" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="Temperature:" />
+                            <NumericUpDown VerticalAlignment="Top" HorizontalAlignment="Right"
+                                           Width="100"
+                                           Value="{Binding OnlineTemperature}" Increment="0.1"
+                                           Minimum="0" Maximum="1" />
+                        </Panel>
+                        <Panel>
+                            <TextBlock Margin="0,0,0,0"
+                                       VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       FontWeight="Bold"
+                                       Text="保存配置" />
+                            <Button Margin="15,0,0,0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right"
+                                    Command="{Binding SaveConfigCommand}"
+                                    Content="保存配置" />
+                        </Panel>
+                    </StackPanel>
+                </controls:GroupBox>
+            </controls:GlassCard>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>Assets\AppIcon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="Avalonia.Themes.Fluent" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.1.0-beta2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.1.0-beta2" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.1.0-beta2" />
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.0.6" />
+    <PackageReference Include="Dock.Avalonia" Version="11.0.0.7" />
+    <PackageReference Include="Dock.Model" Version="11.0.0.7" />
+    <PackageReference Include="Dock.Model.Avalonia" Version="11.0.0.7" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0-beta2" />
+    <PackageReference Include="SukiUI" Version="6.0.0-beta7" />
+    <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="ShowMeTheXaml.Avalonia" Version="1.5.1" />
+    <PackageReference Include="ShowMeTheXaml.Avalonia.Generator" Version="1.5.1" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Pages\LlmConfig\LlmConfigPage.axaml.cs">
+      <DependentUpon>LlmConfigPage.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\BertVits2Config\BertVits2ConfigPage.axaml.cs">
+      <DependentUpon>BertVits2ConfigPage.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\VoiceInputConfig\VoiceInputConfigPage.axaml.cs">
+      <DependentUpon>VoiceInputConfigPage.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\StatusPage\StatusPage.axaml.cs">
+      <DependentUpon>StatusPage.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\HomePage\HomePage.axaml.cs">
+      <DependentUpon>HomePage.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\CharacterPreset\CharacterPresetConfigPage.axaml.cs">
+      <DependentUpon>BertVits2ConfigPage.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\About\About.axaml.cs">
+      <DependentUpon>About.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\About\About.axaml.cs">
+      <DependentUpon>StatusPage.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\MyElysiaCore\MyElysiaCore.csproj" />
+    <ProjectReference Include="..\MyElysiaRunner\MyElysiaRunner.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="ControlsLibrary\" />
+    <Folder Include="Styles\" />
+  </ItemGroup>
+</Project>

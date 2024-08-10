@@ -1,0 +1,26 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:extraConfig="clr-namespace:MyElysiaUI.Pages.ExtraConfig"
+             x:DataType="extraConfig:ExtraConfigPageViewModel"
+             x:Class="MyElysiaUI.Pages.ExtraConfig.ExtraConfigPage">
+    <controls:GlassCard Margin="40"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+        <controls:GroupBox Header="额外配置">
+            <StackPanel>
+                <Image Width="135"
+                       Height="135"
+                       Margin="30"
+                       HorizontalAlignment="Center"
+                       Source="/Assets/AppImage.png" />
+                <TextBlock Name="TextBlockWithInline">
+                    还没写 ：)
+                </TextBlock>
+            </StackPanel>
+        </controls:GroupBox>
+    </controls:GlassCard>
+</UserControl>

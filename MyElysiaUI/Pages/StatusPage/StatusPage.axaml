@@ -1,0 +1,145 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:statusPage="clr-namespace:MyElysiaUI.Pages.StatusPage"
+             xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             x:DataType="statusPage:StatusPageViewModel"
+             x:Class="MyElysiaUI.Pages.StatusPage.StatusPage">
+
+    <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <WrapPanel Margin="15"
+                   theme:WrapPanelExtensions.AnimatedScroll="True"
+                   Orientation="Horizontal">
+            <suki:GlassCard Width="600" Margin="15">
+                <suki:GroupBox Header="加载配置文件">
+                    <suki:BusyArea Name="BusySignIn"
+                                   BusyText="正在运行..."
+                                   IsBusy="{Binding RunningState}">
+                        <StackPanel Margin="25,0" Spacing="10">
+                            <ToolTip>加载你的大语言模型、人物设定配置以及其它</ToolTip>
+                            <Panel>
+                                <Button Margin="15,0,0,0"
+                                        VerticalAlignment="Top" HorizontalAlignment="Left"
+                                        Command="{Binding RescanConfigCommand}"
+                                        Content="刷新配置文件列表" />
+                            </Panel>
+                            <Panel>
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="选择大语言模型运行配置文件:" />
+                                <ComboBox VerticalAlignment="Top" HorizontalAlignment="Right"
+                                          Width="200"
+                                          ItemsSource="{Binding ModelParameterConfigList}"
+                                          SelectedItem="{Binding SelectedModelParameterConfig}" />
+                            </Panel>
+                            <Panel>
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="选择人物设定配置文件:" />
+                                <ComboBox VerticalAlignment="Top" HorizontalAlignment="Right"
+                                          Width="200"
+                                          ItemsSource="{Binding CharacterPresetConfigList}"
+                                          SelectedItem="{Binding SelectedCharacterPresetConfig}" />
+                            </Panel>
+                            <StackPanel Orientation="Vertical" Spacing="10">
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="选择大语言模型类型（本地模式，在线模式）:" />
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="本地模式" GroupName="R1" IsChecked="{Binding !ModelTypeProperty}" />
+                                    <RadioButton Content="在线模式" GroupName="R1" IsChecked="{Binding ModelTypeProperty}" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Spacing="10">
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="选择输入模式类型:" />
+                                <StackPanel Orientation="Horizontal">
+                                    <RadioButton Content="文本输入" GroupName="R2"
+                                                 IsChecked="{Binding !TextInputModeProperty}" />
+                                    <RadioButton Content="语音输入" GroupName="R2"
+                                                 IsChecked="{Binding TextInputModeProperty}" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" Spacing="10">
+                                <TextBlock Margin="0,0,0,0"
+                                           VerticalAlignment="Center" HorizontalAlignment="Left"
+                                           FontWeight="Bold"
+                                           Text="选择本地大语言模型（如果使用的是本地模式）:" />
+                                <ComboBox VerticalAlignment="Top" HorizontalAlignment="Left"
+                                          ItemsSource="{Binding LocalModelFileNames}"
+                                          SelectedItem="{Binding SelectedLocalModelFileName}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </suki:BusyArea>
+                </suki:GroupBox>
+            </suki:GlassCard>
+            <suki:GlassCard Width="600" Margin="15">
+                <suki:GroupBox Header="运行控制面板">
+                    <StackPanel Margin="25,0" Spacing="10">
+                        <ToolTip>准备好了吗？开始启动！</ToolTip>
+                        <Panel>
+                            <Button Margin="15,0,0,0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Center"
+                                    Command="{Binding RunCommand}"
+                                    IsEnabled="{Binding !RunCodeProtection}"
+                                    Content="{Binding RunButtonText}" />
+                        </Panel>
+                        <Panel>
+                            <suki:Stepper Margin="15"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Index="{Binding StepperIndex}"
+                                          Steps="{Binding Steps}" />
+                        </Panel>
+                        <StackPanel Spacing="10" Orientation="Horizontal">
+                            <Border Width="30" Height="30"
+                                    Background="{Binding StatusBrush}"
+                                    CornerRadius="15" />
+                            <suki:InfoBar Title="{Binding InfoBarTitle}"
+                                          Message="{Binding InfoBarMessage}"
+                                          Severity="{Binding InfoBarSeverity}"
+                                          IsClosable="False"
+                                          Margin="10" />
+                        </StackPanel>
+                    </StackPanel>
+                </suki:GroupBox>
+            </suki:GlassCard>
+            <suki:GlassCard Width="600" Margin="15">
+                <suki:GroupBox Header="文本对话区域">
+                    <StackPanel Margin="25,0" Spacing="10">
+                        <ToolTip>文本对话区域</ToolTip>
+                        <Button Margin="15,0,0,0"
+                                VerticalAlignment="Top" HorizontalAlignment="Left"
+                                Command="{Binding ClearHistoryCommand}"
+                                Content="清空历史记忆（请在运行时清理，否则不会生效）" />
+                        <TextBox Width="500" Height="600"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 CaretIndex="{Binding CaretIndex}"
+                                 Text="{Binding HistoryTextBlock}" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Text="{Binding InputTextBox}" Width="400"
+                                     VerticalAlignment="Top" HorizontalAlignment="Left"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap" />
+                            <Button Margin="15,0,0,0"
+                                    VerticalAlignment="Top" HorizontalAlignment="Right"
+                                    Command="{Binding InferCommand}"
+                                    Content="发送" />
+                        </StackPanel>
+                    </StackPanel>
+                </suki:GroupBox>
+            </suki:GlassCard>
+        </WrapPanel>
+    </ScrollViewer>
+
+
+</UserControl>

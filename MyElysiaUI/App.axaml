@@ -1,0 +1,21 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI" 
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:namespace="clr-namespace:MyElysiaUI"
+             x:Class="MyElysiaUI.App">
+    <Application.DataTemplates>
+        <namespace:ViewLocator />
+    </Application.DataTemplates>
+    
+    <Application.Styles>
+        <FluentTheme></FluentTheme>
+        
+        <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml" />
+        <StyleInclude Source="avares://AvaloniaEdit/Themes/Fluent/AvaloniaEdit.xaml" />
+        <sukiUi:SukiTheme ThemeColor="Blue"/>
+        <avalonia:MaterialIconStyles />
+        
+    </Application.Styles>
+    
+</Application>
