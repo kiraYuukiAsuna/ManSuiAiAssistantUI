@@ -1,4 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Net.Http.Headers;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OpenAI;
 using Serilog;
 
@@ -169,6 +173,7 @@ public class OnlineLlmController
 
         ensureContextSize(userInputMessage);
         
+        /*
         var client = new ChatClient(model: m_CreateInfo.OnlineModelName,
             m_CreateInfo.OnlineModelApiKey.Length > 0 ? m_CreateInfo.OnlineModelApiKey : "123456",
             options: new OpenAIClientOptions()
@@ -176,7 +181,19 @@ public class OnlineLlmController
                 Endpoint = new Uri(m_CreateInfo.OnlineModelUrl),
                 NetworkTimeout = TimeSpan.FromSeconds(30)
             });
-
+            */
+        
+        using var client = new HttpClient
+        {
+            Timeout = TimeSpan.FromSeconds(30)
+        };
+        client.BaseAddress = new Uri(m_CreateInfo.OnlineModelUrl);
+        
+        string url = m_CreateInfo.OnlineModelUrl;
+        string apiKey = m_CreateInfo.OnlineModelApiKey;
+        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        
         if (!File.Exists(HistoryPath))
         {
             Directory.CreateDirectory(HistoryPath);
@@ -217,17 +234,70 @@ public class OnlineLlmController
 
         AddMessage(ref m_ChatHistory, userInputMessage);
 
-        ChatCompletion completion = await client.CompleteChatAsync(m_ChatHistory, new ChatCompletionOptions
+        /*ChatCompletion completion = await client.CompleteChatAsync(m_ChatHistory, new ChatCompletionOptions
         {
             Temperature = m_CreateInfo.Temperature
-        });
+        });*/
+        
+        // Prepare the request content
 
-        m_CallbackDelegate(completion.ToString());
+        List<object> messages = new List<object>();
 
-        AddMessage(ref m_ChatHistory, new Message(Role.Assistant, completion.ToString()));
+        foreach (var message in m_ChatHistory)
+        {
+            string role = "";
+            string newContent = "";
 
-        Console.WriteLine(completion.ToString());
-        // Console.WriteLine($"[ASSISTANT]: {completion}");
+            switch (message)
+            {
+                case SystemChatMessage systemMessage:
+                    role = "system";
+                    newContent = systemMessage.Content != null && systemMessage.Content.Count > 0
+                        ? systemMessage.Content[0].Text
+                        : "";
+                    break;
+                case AssistantChatMessage assistantMessage:
+                    role = "assistant";
+                    newContent = assistantMessage.Content != null && assistantMessage.Content.Count > 0
+                        ? assistantMessage.Content[0].Text
+                        : "";
+                    break;
+                case UserChatMessage userMessage:
+                    role = "user";
+                    newContent = userMessage.Content != null && userMessage.Content.Count > 0
+                        ? userMessage.Content[0].Text
+                        : "";
+                    break;
+            }
+
+            messages.Add(new { role = role, content = newContent });
+        }
+        
+        var requestData = new
+        {
+            model = m_CreateInfo.OnlineModelName,
+            messages = messages,
+            temperature = m_CreateInfo.Temperature
+        };
+        
+        var jsonMessage = JsonConvert.SerializeObject(requestData);
+        
+        var content = new StringContent(jsonMessage, Encoding.UTF8, "application/json");
+        content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+        
+        HttpResponseMessage response = await client.PostAsync(url, content);
+        response.EnsureSuccessStatusCode();
+        
+        string responseBody = await response.Content.ReadAsStringAsync();
+
+        var completion = JObject.Parse(responseBody);
+
+        var messageR = completion["choices"][0]["message"]["content"].ToString();
+        m_CallbackDelegate(messageR);
+
+        AddMessage(ref m_ChatHistory, new Message(Role.Assistant, messageR));
+
+        Log.Information($"[ASSISTANT]: {completion.ToString()}");
 
         if (!File.Exists(HistoryPath))
         {
